@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:background="@drawable/bottom_sheet_ll">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create To-Do Task"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+    </TextView>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="#ffffff"
+        android:id="@+id/Task_Heading_Bottom_Sheet"
+        android:hint="Enter Heading"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/heading_task_bottom_sheet"
+        android:gravity="center">
+    </EditText>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="#ffffff"
+        android:id="@+id/Task_Details_Bottom_Sheet"
+        android:hint="Full Details"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/heading_task_bottom_sheet"
+        android:gravity="center">
+    </EditText>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:id="@+id/save_button"
+        android:background="@drawable/button_save">
+    </Button>
+</LinearLayout>

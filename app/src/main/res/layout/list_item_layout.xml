@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/list_layout"
+    android:layout_width="match_parent"
+    android:layout_marginTop="3dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOLOL"
+        android:paddingTop="3dp"
+        android:textSize="32sp"
+        android:textColor="#000000"
+        android:id="@+id/HeadingOfTask"
+        android:paddingLeft="16dp"
+        android:textStyle="bold">
+    </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nobody Literally Nobody"
+        android:id="@+id/DetailofTask"
+        android:paddingLeft="16dp"
+        android:textSize="24sp">
+    </TextView>
+
+</LinearLayout>
