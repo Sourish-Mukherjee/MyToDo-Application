@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
-    private Button button, saveButton;
+    private Button  saveButton;
+    private FloatingActionButton floatingActionButton;
     private EditText heading, details;
     private final ArrayList<String> head = new ArrayList<>();
     private final ArrayList<String> dsc = new ArrayList<>();
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                                 }).show();
                         }
                     }
-
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -71,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(taskRecyclerView);
-        button = findViewById(R.id.TestButton);
-        button.setOnClickListener(new View.OnClickListener() {
+       floatingActionButton = findViewById(R.id.FloatingButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.SheetDialog);
@@ -101,7 +102,5 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 }
