@@ -45,8 +45,18 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return array;
     }
 
+    public static void delete(SQLiteDatabase db, String name) {
+        String projection[] = {"UID", "Title", "Details"};
+        Cursor c = db.query("TaskToBeDone", projection, null, null, null, null, null);
+        c.moveToPosition(-1);
+        while (c.moveToNext()) {
+            if (c.getString(1).equals(name))
+                db.delete("TaskToBeDone", "UID" + " = " + c.getString(0), null);
+        }
+    }
+
     public static long getProfilesCount(SQLiteDatabase db, String name) {
-        long count=0;
+        long count = 0;
         if (name.equals("TaskToBeDone"))
             count = DatabaseUtils.queryNumEntries(db, "TaskToBeDone");
         return count;

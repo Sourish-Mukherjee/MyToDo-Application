@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
-    private Button  saveButton;
+    private Button saveButton;
     private FloatingActionButton floatingActionButton;
     private EditText heading, details;
     private final ArrayList<String> head = new ArrayList<>();
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                             case ItemTouchHelper.RIGHT:
                                 head.remove(viewHolder.getAdapterPosition());
                                 dsc.remove(viewHolder.getAdapterPosition());
+                                DataBaseHelper.delete(dataBaseHelper.getWritableDatabase(), deletedHeading);
                                 taskAdapter.notifyDataSetChanged();
                                 Snackbar.make(taskRecyclerView, "Click Undo To Get It Back!", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
                                     @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                                 }).show();
                         }
                     }
+
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(taskRecyclerView);
-       floatingActionButton = findViewById(R.id.FloatingButton);
+        floatingActionButton = findViewById(R.id.FloatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         long count = DataBaseHelper.getProfilesCount(dataBaseHelper.getReadableDatabase(), "TaskToBeDone");
                         int i = 0;
+                        head.clear();
+                        dsc.clear();
                         heading = bottomSheetDialog.findViewById(R.id.Task_Heading_Bottom_Sheet);
                         details = bottomSheetDialog.findViewById(R.id.Task_Details_Bottom_Sheet);
                         DataBaseHelper.writeData(dataBaseHelper.getWritableDatabase(), heading.getText().toString(), details.getText().toString());
