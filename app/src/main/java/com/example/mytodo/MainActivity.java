@@ -1,6 +1,7 @@
 package com.example.mytodo;
 
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -92,16 +93,30 @@ public class MainActivity extends AppCompatActivity {
                         dsc.clear();
                         heading = bottomSheetDialog.findViewById(R.id.Task_Heading_Bottom_Sheet);
                         details = bottomSheetDialog.findViewById(R.id.Task_Details_Bottom_Sheet);
-                        DataBaseHelper.writeData(dataBaseHelper.getWritableDatabase(), heading.getText().toString(), details.getText().toString());
-                        while (count != -1) {
-                            head.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(0));
-                            dsc.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i++).get(1));
-                            count--;
+                        if (heading.getText().toString().equals("") == false && details.getText().toString().equals("") == false) {
+
+                            DataBaseHelper.writeData(dataBaseHelper.getWritableDatabase(), heading.getText().toString(), details.getText().toString());
+                            while (count != -1) {
+                                head.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(0));
+                                dsc.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i++).get(1));
+                                count--;
+                            }
+                            taskAdapter.setHeading(head);
+                            taskAdapter.setDetails(dsc);
+                            taskRecyclerView.setAdapter(taskAdapter);
+                            bottomSheetDialog.dismiss();
+                        } else {
+                            Drawable customErrorDrawable = getResources().getDrawable(R.drawable.ic_error_black_24dp);
+                            customErrorDrawable.setBounds(0, 0, customErrorDrawable.getIntrinsicWidth(), customErrorDrawable.getIntrinsicHeight());
+                            if (heading.getText().toString().equals("") && details.getText().toString().equals("")) {
+                                heading.setError("Enter The Heading For Your Task",customErrorDrawable);
+                                details.setError("Enter The Details For Your Task",customErrorDrawable);
+                            } else if (heading.getText().toString().equals(""))
+                                heading.setError("Enter The Heading For Your Task", customErrorDrawable);
+                            else
+                                details.setError("Enter The Details For Your Task",customErrorDrawable);
+
                         }
-                        taskAdapter.setHeading(head);
-                        taskAdapter.setDetails(dsc);
-                        taskRecyclerView.setAdapter(taskAdapter);
-                        bottomSheetDialog.dismiss();
                     }
                 });
             }
