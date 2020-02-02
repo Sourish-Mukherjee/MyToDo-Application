@@ -17,7 +17,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table TaskToBeDone (UID INTEGER PRIMARY KEY AUTOINCREMENT,  Title text, Details text)");
+        db.execSQL("create table TaskToBeDone (UID INTEGER PRIMARY KEY AUTOINCREMENT,  Title text, Details text, Dates text)");
 
     }
 
@@ -28,25 +28,27 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public static void writeData(SQLiteDatabase db, String heading, String detail) {
+    public static void writeData(SQLiteDatabase db, String heading, String detail,String dates) {
         ContentValues values = new ContentValues();
         values.put("Title", heading);
         values.put("Details", detail);
+        values.put("Dates",dates);
         db.insert("TaskToBeDone", null, values);
     }
 
     public static ArrayList<String> getData(SQLiteDatabase db, int num) {
         ArrayList<String> array = new ArrayList<>();
-        String projection[] = {"UID", "Title", "Details"};
+        String projection[] = {"UID", "Title", "Details","Dates"};
         Cursor c = db.query("TaskToBeDone", projection, null, null, null, null, null);
         c.moveToPosition(num);
         array.add(c.getString(1));
         array.add(c.getString(2));
+        array.add(c.getString(3));
         return array;
     }
 
     public static void delete(SQLiteDatabase db, String name) {
-        String projection[] = {"UID", "Title", "Details"};
+        String projection[] = {"UID", "Title", "Details","Dates"};
         Cursor c = db.query("TaskToBeDone", projection, null, null, null, null, null);
         c.moveToPosition(-1);
         while (c.moveToNext()) {

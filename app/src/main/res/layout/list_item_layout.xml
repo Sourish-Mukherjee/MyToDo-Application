@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@drawable/list_layout"
@@ -19,12 +19,26 @@
     </TextView>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="Test"
+        android:textSize="18sp"
+        android:id="@+id/date_for_task"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold">
+    </TextView>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nobody Literally Nobody"
         android:textColor="#FFFFFF"
         android:id="@+id/DetailofTask"
         android:paddingLeft="16dp"
+        android:layout_below="@+id/HeadingOfTask"
         android:textSize="24sp">
     </TextView>
     <View
@@ -32,4 +46,4 @@
         android:layout_height="1dp"
         android:background="#ff7e5f"></View>
 
-</LinearLayout>
+</RelativeLayout>
