@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,15 +28,14 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
 
-    private Button saveButton,calentime_button;
+    private Button saveButton, calentime_button;
     private FloatingActionButton floatingActionButton;
-    private TextView datefortask;
     private EditText heading, details;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private final ArrayList<String> head = new ArrayList<>();
     private final ArrayList<String> dsc = new ArrayList<>();
     private final ArrayList<String> datesofeachTask = new ArrayList<>();
-    private TaskAdapter taskAdapter = new TaskAdapter(head, dsc,datesofeachTask);
+    private TaskAdapter taskAdapter = new TaskAdapter(head, dsc, datesofeachTask);
     private DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
     private String date;
 
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(taskRecyclerView);
+        loadAtFirstTheTask(taskRecyclerView);
         floatingActionButton = findViewById(R.id.FloatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,41 +98,28 @@ public class MainActivity extends AppCompatActivity {
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        long count = DataBaseHelper.getProfilesCount(dataBaseHelper.getReadableDatabase(), "TaskToBeDone");
-                        int i = 0;
-                        head.clear();
-                        dsc.clear();
-                        heading = bottomSheetDialog.findViewById(R.id.Task_Heading_Bottom_Sheet);
-                        details = bottomSheetDialog.findViewById(R.id.Task_Details_Bottom_Sheet);
-                        if (heading.getText().toString().equals("") == false && details.getText().toString().equals("") == false) {
-                            DataBaseHelper.writeData(dataBaseHelper.getWritableDatabase(), heading.getText().toString(), details.getText().toString(),date);
-                            while (count != -1) {
-                                head.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(0));
-                                dsc.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(1));
-                                datesofeachTask.add(i,DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(),i++).get(2));
-                                count--;
-                            }
-                            taskAdapter.setHeading(head);
-                            taskAdapter.setDetails(dsc);
-                            taskAdapter.setDateofEachTask(datesofeachTask);
-                            taskRecyclerView.setAdapter(taskAdapter);
-                            bottomSheetDialog.dismiss();
-                        } else {
-                            Drawable customErrorDrawable = getResources().getDrawable(R.drawable.ic_error_black_24dp);
-                            customErrorDrawable.setBounds(0, 0, customErrorDrawable.getIntrinsicWidth(), customErrorDrawable.getIntrinsicHeight());
-                            if (heading.getText().toString().equals("") && details.getText().toString().equals("")) {
-                                heading.setError("Enter The Heading For Your Task",customErrorDrawable);
-                                details.setError("Enter The Details For Your Task",customErrorDrawable);
-                            } else if (heading.getText().toString().equals(""))
-                                heading.setError("Enter The Heading For Your Task", customErrorDrawable);
-                            else
-                                details.setError("Enter The Details For Your Task",customErrorDrawable);
-
-                        }
+                        loadTheTasks(bottomSheetDialog, taskRecyclerView);
                     }
                 });
             }
         });
+    }
+
+    private void loadAtFirstTheTask(RecyclerView taskRecyclerView) {
+        long count = DataBaseHelper.getProfilesCount(dataBaseHelper.getReadableDatabase(), "TaskToBeDone");
+        int i = 0;
+        head.clear();
+        dsc.clear();
+        while (count != 0) {
+            head.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(0));
+            dsc.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(1));
+            datesofeachTask.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i++).get(2));
+            count--;
+        }
+        taskAdapter.setHeading(head);
+        taskAdapter.setDetails(dsc);
+        taskAdapter.setDateofEachTask(datesofeachTask);
+        taskRecyclerView.setAdapter(taskAdapter);
     }
 
     private void calender() {
@@ -161,5 +147,39 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+    }
+
+    private void loadTheTasks(BottomSheetDialog bottomSheetDialog, RecyclerView taskRecyclerView) {
+        long count = DataBaseHelper.getProfilesCount(dataBaseHelper.getReadableDatabase(), "TaskToBeDone");
+        int i = 0;
+        head.clear();
+        dsc.clear();
+        heading = bottomSheetDialog.findViewById(R.id.Task_Heading_Bottom_Sheet);
+        details = bottomSheetDialog.findViewById(R.id.Task_Details_Bottom_Sheet);
+        if (heading.getText().toString().equals("") == false && details.getText().toString().equals("") == false) {
+            DataBaseHelper.writeData(dataBaseHelper.getWritableDatabase(), heading.getText().toString(), details.getText().toString(), date);
+            while (count != -1) {
+                head.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(0));
+                dsc.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i).get(1));
+                datesofeachTask.add(i, DataBaseHelper.getData(dataBaseHelper.getReadableDatabase(), i++).get(2));
+                count--;
+            }
+            taskAdapter.setHeading(head);
+            taskAdapter.setDetails(dsc);
+            taskAdapter.setDateofEachTask(datesofeachTask);
+            taskRecyclerView.setAdapter(taskAdapter);
+            bottomSheetDialog.dismiss();
+        } else {
+            Drawable customErrorDrawable = getResources().getDrawable(R.drawable.ic_error_black_24dp);
+            customErrorDrawable.setBounds(0, 0, customErrorDrawable.getIntrinsicWidth(), customErrorDrawable.getIntrinsicHeight());
+            if (heading.getText().toString().equals("") && details.getText().toString().equals("")) {
+                heading.setError("Enter The Heading For Your Task", customErrorDrawable);
+                details.setError("Enter The Details For Your Task", customErrorDrawable);
+            } else if (heading.getText().toString().equals(""))
+                heading.setError("Enter The Heading For Your Task", customErrorDrawable);
+            else
+                details.setError("Enter The Details For Your Task", customErrorDrawable);
+
+        }
     }
 }
